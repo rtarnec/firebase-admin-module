@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Firebase Admin Module</title>
+    <meta name="author" content="Renaud Tarnec - www.rtaconsulting.eu" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="/__/firebase/7.5.2/firebase-app.js"></script>
+    <script src="/__/firebase/7.5.2/firebase-functions.js"></script>
+    <script src="/__/firebase/7.5.2/firebase-auth.js"></script>
+
+    <style media="screen">
+      body {
+        background: #ffffff;
+        color: rgba(0, 0, 0, 0.87);
+        font-family: Roboto, Helvetica, Arial, sans-serif;
+        padding: 42px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid w-75" id="statusContainer">
+      <div class="alert alert-primary" role="alert">
+        <h4 class="alert-heading" id="alertHeading"></h4>
+        <hr />
+        <p class="mb-0" id="alertContent"></p>
+      </div>
+    </div>
+
+    <div class="container-fluid w-75 mt-3" id="loginContainer">
+      <div class="form-group">
+        <label for="adminEmail">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="loginEmail"
+          placeholder="Your Email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="loginPassword"
+          placeholder="Password"
+        />
+      </div>
+
+      <button id="login" class="btn btn-primary">
+        Login
+      </button>
+    </div>
+
+    <div class="container-fluid w-75 mt-3 mb-3 d-none" id="logoutContainer">
+      <button id="logout" class="btn btn-primary">
+        Logout
+      </button>
+    </div>
+
+    <div class="container-fluid w-75 mt-5">
+      <h4 class="mb-3">Create a New User</h4>
+
+      <form class="w-75">
+        <div class="form-group row">
+          <label for="firstName" class="col-sm-3 col-form-label"
+            >First Name</label
+          >
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              autocomplete="off"
+              placeholder="First Name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="lastName" class="col-sm-3 col-form-label"
+            >Last Name</label
+          >
+          <div class="col-sm-9">
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              autocomplete="off"
+              placeholder="Last Name"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-3 col-form-label">Email</label>
+          <div class="col-sm-9">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              autocomplete="off"
+              placeholder="Email"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="password" class="col-sm-3 col-form-label">Password</label>
+          <div class="col-sm-9">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              autocomplete="off"
+              placeholder="Password"
+            />
+          </div>
+        </div>
+        <fieldset class="form-group">
+          <div class="row">
+            <legend class="col-form-label col-sm-3 pt-0">Role</legend>
+            <div class="col-sm-9">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="roleOptions"
+                  id="inlineRadio1"
+                  value="author"
+                />
+                <label class="form-check-label" for="inlineRadio1"
+                  >Author</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="roleOptions"
+                  id="inlineRadio2"
+                  value="editor"
+                />
+                <label class="form-check-label" for="inlineRadio2"
+                  >Editor</label
+                >
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <button type="button" id="createUser" class="btn btn-primary">
+              Create User
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="container-fluid w-75 d-none" id="statusUserCreation">
+      <div
+        id="alertStatusUserCreation"
+        class="alert alert-success"
+        role="alert"
+      >
+        <p class="mb-0" id="alertStatusUserContent"></p>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        firebase.initializeApp({
+          apiKey: '....', //Adapt with your own config
+          authDomain: '....', //Adapt with your own config
+          projectId: '....', //Adapt with your own config
+          appId: '....' //Adapt with your own config
+        });
+
+        var auth = firebase.auth();
+        var functions = firebase.functions();
+
+        function createUser() {
+          $('#statusUserCreation').addClass('d-none');
+
+          var createUser = functions.httpsCallable('createUser');
+
+          var user = {
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
+            password: $('#password').val(),
+            email: $('#email').val(),
+            role: $('input[name=roleOptions]:checked').val()
+          };
+
+          createUser(user)
+            .then(function(resp) {
+              displayAlertStatusUser(resp.data.result, 'alert-success');
+            })
+            .catch(function(error) {
+              var code = error.code;
+              var message = error.message;
+              displayAlertStatusUser(message, 'alert-danger');
+            });
+        }
+
+        function login() {
+          auth
+            .signInWithEmailAndPassword(
+              $('#loginEmail').val(),
+              $('#loginPassword').val()
+            )
+            .catch(function(error) {
+              $('#alertContent').text(error.message);
+            });
+        }
+
+        function logout() {
+          auth.signOut();
+        }
+
+        auth.onAuthStateChanged(function(user) {
+          $('#statusUserCreation').addClass('d-none');
+          if (user) {
+            $('#alertHeading').text('You are logged in.');
+
+            user
+              .getIdTokenResult()
+              .then(idTokenResult => {
+                if (idTokenResult.claims.admin) {
+                  $('#alertContent').text(
+                    'You have the "Admin" role, therefore creating a user will succeed.'
+                  );
+                } else {
+                  var currentRole = getCurrentNonAdminRole(
+                    idTokenResult.claims
+                  );
+
+                  if (currentRole) {
+                    $('#alertContent').text(
+                      "You don't have the Admin role. You have the " +
+                        currentRole +
+                        ' role. You can try to create a user: it will fail...'
+                    );
+                  } else {
+                    $('#alertContent').text(
+                      "You don't have the Admin role. You can try to create a user: it will fail..."
+                    );
+                  }
+                }
+                displayLogout();
+              })
+              .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode === 'auth/invalid-custom-token') {
+                  $('#alertContent').text(
+                    'The token you provided is not valid.'
+                  );
+                } else {
+                  $('#alertContent').text(error);
+                }
+                displayLogout();
+              });
+          } else {
+            $('#alertHeading').text('You are not logged in.');
+            $('#alertContent').text(
+              'Please login. Or try to create a user: it will fail!'
+            );
+            displayLogin();
+          }
+        });
+
+        function getCurrentNonAdminRole(claims) {
+          if (claims.editor) {
+            return 'Editor';
+          } else if (claims.author) {
+            return 'Author';
+          } else {
+            return undefined;
+          }
+        }
+
+        function displayAlertStatusUser(msg, cls) {
+          $('#alertStatusUserContent').text(msg);
+          $('#alertStatusUserCreation').removeClass('alert-success');
+          $('#alertStatusUserCreation').removeClass('alert-danger');
+          $('#alertStatusUserCreation').addClass(cls);
+          $('#statusUserCreation').removeClass('d-none');
+        }
+
+        function displayLogin() {
+          $('#loginContainer').removeClass('d-none');
+          $('#logoutContainer').addClass('d-none');
+        }
+
+        function displayLogout() {
+          $('#loginContainer').addClass('d-none');
+          $('#logoutContainer').removeClass('d-none');
+        }
+
+        $('#login').on('click', function() {
+          login();
+        });
+
+        $('#logout').on('click', function() {
+          logout();
+        });
+
+        $('#createUser').on('click', function() {
+          createUser();
+        });
+
+        $('#tokenRefresh').on('click', function() {
+          tokenRefresh();
+        });
+      });
+    </script>
+  </body>
+</html>

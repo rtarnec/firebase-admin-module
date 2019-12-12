@@ -4,7 +4,7 @@ A small Firebase project demonstrating an **Admin Module** which allows end-user
 
 The project is composed of:
 
-- A Cloud Function that fetches the subcollections of a Document;
+- A Callable Cloud Function ;
 - A simple HTML page that demonstrates how it works from a web client.
 
 It demonstrates the approach presented in the following Medium article: https://medium.com/firebase-tips-tricks/how-to-list-all-subcollections-of-a-cloud-firestore-document-17f2bb80a166

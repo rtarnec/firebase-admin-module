@@ -7,7 +7,7 @@ The project is composed of:
 - A Callable Cloud Function ;
 - A simple HTML page that demonstrates how it works from a web client.
 
-It demonstrates the approach presented in the following Medium article: https://medium.com/firebase-tips-tricks/how-to-list-all-subcollections-of-a-cloud-firestore-document-17f2bb80a166
+It demonstrates the approach presented in the following Medium article: https://medium.com/firebase-tips-tricks/how-to-create-an-admin-module-for-managing-users-access-and-roles-34a94cf31a6e
 
 ### How to use it?
 
@@ -24,7 +24,7 @@ It demonstrates the approach presented in the following Medium article: https://
 
 Create an Admin user as explained in the Medium article.
 
-Then open the root url of the project (https://<your-project-id>.firebaseapp.com) with your preferred browser and start playing with it:
+Then open the root url of the project (https://your-project-id.firebaseapp.com) with your preferred browser and start playing with it:
 
 - Login as an Admin user and create different users with different roles;
 - Logout and try to create new users;

@@ -5,7 +5,7 @@ A small Firebase project demonstrating an **Admin Module** which allows end-user
 The project is composed of:
 
 - A Callable Cloud Function ;
-- A simple HTML page that demonstrates how it works from a web client.
+- A simple demo HTML page that demonstrates how it works from a web client.
 
 It demonstrates the approach presented in the following Medium article: https://medium.com/firebase-tips-tricks/how-to-create-an-admin-module-for-managing-users-access-and-roles-34a94cf31a6e
 
